@@ -1,0 +1,39 @@
+</head>
+<body>
+    <canvas id="mandelbrotCanvas" width="800" height="800"></canvas>
+    <script>
+        function drawMandelbrot() {
+            const canvas = document.getElementById('mandelbrotCanvas');
+            const ctx = canvas.getContext('2d');
+            const width = canvas.width;
+            const height = canvas.height;
+            const maxIterations = 1000;
+
+            for (let x = 0; x < width; x++) {
+                for (let y = 0; y < height; y++) {
+                    let zx = 0, zy = 0;
+                    const cx = (x - width / 2) * 4 / width;
+                    const cy = (y - height / 2) * 4 / height;
+                    let iteration = 0;
+
+                    while (zx * zx + zy * zy < 4 && iteration < maxIterations) {
+                        const tmp = zx * zx - zy * zy + cx;
+                        zy = 2 * zx * zy + cy;
+                        zx = tmp;
+                        iteration++;
+                    }
+
+                    const color = iteration === maxIterations ? 0 : iteration * 255 / maxIterations;
+                    const r = (color * 9) % 256;
+                    const g = (color * 7) % 256;
+                    const b = (color * 5) % 256;
+                    ctx.fillStyle = `rgb(${r}, ${g}, ${b})`;
+                    ctx.fillRect(x, y, 1, 1);
+                }
+            }
+        }
+
+        drawMandelbrot();
+    </script>
+</body>
+</html>
